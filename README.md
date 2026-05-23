@@ -14,7 +14,7 @@ The project is designed as a final-year academic project. It runs locally and us
 
 ### Identity Access Management (IAM)
 
-Handles user registration, login, JWT authentication, bcrypt password hashing, and role-based access control.
+Handles user registration, login, logout, JWT authentication through HTTP-only cookies, bcrypt password hashing, and role-based access control.
 
 ### Appointment Booking System
 
@@ -31,7 +31,7 @@ Handles simulated Card, PayNow, and Cash payments, saved cards, payment history,
 | Frontend | React.js |
 | Backend | Express.js on Node.js |
 | Database | MySQL |
-| Authentication | JSON Web Tokens (JWT), bcrypt |
+| Authentication | JWT in HTTP-only cookies, bcrypt |
 | API | REST over HTTP with JSON |
 | Email | Nodemailer with Mailtrap |
 | Payments | Simulated Card, PayNow, and Cash |
@@ -66,7 +66,7 @@ These commands are expected by the specification, but should be verified against
 
 - Use React.js for the frontend and Express.js for the backend.
 - Use MySQL with foreign key constraints.
-- Protect non-public API routes with JWT verification.
+- Protect non-public API routes with JWT cookie verification.
 - Enforce role permissions in backend middleware.
 - Store secrets in environment variables.
 - Provide a `.env.example` when environment variables are introduced.

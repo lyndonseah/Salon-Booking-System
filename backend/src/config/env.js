@@ -60,6 +60,12 @@ const config = {
     secret: process.env.JWT_SECRET || '',
     expiresIn: process.env.JWT_EXPIRES_IN || '1d'
   },
+  authCookie: {
+    name: process.env.AUTH_COOKIE_NAME || 'sbs_token',
+    maxAgeMs: toNumber(process.env.AUTH_COOKIE_MAX_AGE_MS, 24 * 60 * 60 * 1000),
+    sameSite: process.env.AUTH_COOKIE_SAME_SITE || 'lax',
+    secure: process.env.AUTH_COOKIE_SECURE === 'true'
+  },
   mailtrap: {
     host: process.env.MAILTRAP_HOST || '',
     port: toNumber(process.env.MAILTRAP_PORT, 2525),
