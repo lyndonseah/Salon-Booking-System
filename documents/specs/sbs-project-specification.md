@@ -235,7 +235,7 @@ The following are explicitly out of scope:
 | Frontend | React.js | Single-page application with client-side routing |
 | Backend | Express.js on Node.js | RESTful API server |
 | Database | MySQL | Relational database with foreign key constraints |
-| Authentication | JSON Web Tokens (JWT) | Stateless token-based auth stored in HTTP-only cookies or local storage |
+| Authentication | JSON Web Tokens (JWT) | Stateless token-based auth stored in HTTP-only cookies |
 | API Protocol | REST over HTTP | JSON request/response bodies |
 | Email Service | Nodemailer \+ Mailtrap | Simulated email delivery for invoices (Mailtrap catches all outbound emails in a test inbox) |
 
@@ -275,11 +275,15 @@ The system follows a three-tier client–server architecture:
 
 3\. On success, the backend issues a signed JWT containing the user ID and role.
 
-4\. The frontend stores the JWT and attaches it as a Bearer token in the Authorization header of subsequent API requests.
+4\. The backend stores the JWT in an HTTP-only auth cookie returned to the client.
 
-5\. A JWT middleware on the backend verifies the token on every protected route and extracts the user’s identity and role.
+5\. The browser or API client sends the auth cookie on subsequent API requests.
 
-6\. Role-checking middleware gates routes so that, for example, only a Manager can access admin endpoints.
+6\. A JWT middleware on the backend verifies the cookie token on every protected route and extracts the user’s identity and role.
+
+7\. Role-checking middleware gates routes so that, for example, only a Manager can access admin endpoints.
+
+8\. Logout clears the auth cookie.
 
 3. ## **Payment Flow**
 
@@ -463,8 +467,9 @@ The IAM module handles all user authentication and authorization. It ensures tha
 | Method | Endpoint | Description | Auth |
 | :---- | :---- | :---- | :---- |
 | POST | /api/auth/register | Register a new Customer account | None |
-| POST | /api/auth/login | Authenticate and receive JWT | None |
-| GET | /api/auth/me | Get current user profile from token | JWT |
+| POST | /api/auth/login | Authenticate and set JWT auth cookie | None |
+| POST | /api/auth/logout | Clear JWT auth cookie | None |
+| GET | /api/auth/me | Get current user profile from cookie token | JWT cookie |
 | GET | /api/users | List all users (Manager) | Manager |
 | POST | /api/users/stylist | Create a Stylist account (Manager) | Manager |
 | PUT | /api/users/:id | Update user details (Manager) | Manager |
@@ -884,4 +889,3 @@ The following table summarises which actions each role can perform.
 | View / manage all appointments | – | – | ✓ |
 | Manage business hours | – | – | ✓ |
 | Manage salon profile | – | – | ✓ |
-
